@@ -1,17 +1,20 @@
 import React from 'react';
 import auth from './auth'
+import {Props} from './App'
 
-export const AppLayout = (props:any) => {
-    return (
-        <div>
-            <h1>App layout</h1>
-            <button onClick={
-                () => {
-                    auth.logout(() => {
-                        props.history.push("/");
-                    })
-                }
-            }>Logout</button>
-        </div>
-    );
+export class AppLayout extends React.Component<Props> {
+    render() {
+        return (
+            <div>
+                <h1>App layout</h1>
+                <button onClick={
+                    () => {
+                        auth.logout(() => {
+                            this.props.history.push("/");
+                        })
+                    }
+                }>Logout</button>
+            </div>
+        );
+    }
 }
