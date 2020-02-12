@@ -1,9 +1,12 @@
 import React from 'react'
 import auth from './auth'
 import {Props} from './App'
-import {login} from './services/authentication.service'
+import AuthenticationService from './services/authentication.service'
 
 export class LandingPage extends React.Component<Props, any> {
+    
+    Auth:AuthenticationService
+
     constructor(props:Props){
         super(props);
         this.state = {
@@ -11,6 +14,7 @@ export class LandingPage extends React.Component<Props, any> {
             password: '',
             error: ''
         };
+        this.Auth = new AuthenticationService();
         this.validateLogin = this.validateLogin.bind(this);
         this.handleUserChange = this.handleUserChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -27,12 +31,12 @@ export class LandingPage extends React.Component<Props, any> {
             return this.setState({error: 'Username and password are required!'})
         }
 
-        login(this.state.username, this.state.password).then(response => {
-            console.log(response);
+        this.Auth.login(this.state.username, this.state.password).then(() => {
+            console.log(localStorage.getItem('user'));
+            this.props.history.push("/app");
         }).catch(error => {
-            console.log(error)
+            console.log(error.response.data);
         })
-        this.props.history.push("/app");
 
     }
 
@@ -61,18 +65,6 @@ export class LandingPage extends React.Component<Props, any> {
                     </label>
                     <input type="submit" value="Submit" />
                 </form>
-                <button onClick={
-                    () => {
-                        auth.login(() => {
-                            this.props.history.push("/app");
-                        })
-                    }
-                }>Login</button>
-                <button onClick={
-                    () => {
-                        login('', '');
-                    }
-                }>Get Token</button>
             </div>
         );
     }
