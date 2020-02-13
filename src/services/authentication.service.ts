@@ -12,9 +12,8 @@ class AuthenticationService {
         }
         const response = await axios.post(`${process.env.REACT_APP_REST_API_ENDPOINT}/login`, body);
         const user = jwt(response.data.token);
-        localStorage.setItem('auth_token', response.data.token)
+        user.token = response.data.token;
         localStorage.setItem('user', JSON.stringify(user));
-        console.log(localStorage.getItem('auth_token'))
         return jwt;
     };
 
@@ -30,11 +29,18 @@ class AuthenticationService {
         let user = localStorage.getItem('user');
         if(user) {
             let u = JSON.parse(user);
-            console.log(u.exp)
-            console.log((new Date).getTime()/1000)
             return u.exp > ((new Date).getTime()/1000);
         } else {
             return false;
+        }
+    }
+
+    isValidAdmin() {
+        let user = localStorage.getItem('user');
+        if(user) {
+            let u = JSON.parse(user);
+            let isAdmin = u.user_claims.roles.includes('admin') || u.user_claims.roles.includes('developer');
+            return u.exp > ((new Date).getTime()/1000) && isAdmin;
         }
     }
 
