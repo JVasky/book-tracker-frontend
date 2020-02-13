@@ -1,6 +1,8 @@
 import React, { ReactHTMLElement } from 'react';
 import {Props} from './App'
 import AuthenticationService from './services/authentication.service'
+import Button from 'react-bootstrap/Button';
+
 
 export class AdminPage extends React.Component<Props> {
     auth:AuthenticationService
@@ -14,12 +16,12 @@ export class AdminPage extends React.Component<Props> {
         return (
             <div>
                 <h1>Admin page</h1>
-                <button onClick={
+                <Button onClick={
                     () => {
                         this.auth.logout();
                         this.props.history.push("/");
                     }
-                }>Logout</button>
+                }>Logout</Button>
             </div>
         );
     }

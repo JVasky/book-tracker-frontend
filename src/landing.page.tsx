@@ -1,11 +1,27 @@
 import React from 'react'
-import auth from './auth'
 import {Props} from './App'
 import AuthenticationService from './services/authentication.service'
+import Jumbotron from 'react-bootstrap/Jumbotron';
+import Alert from 'react-bootstrap/Alert'
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
+import Form from 'react-bootstrap/Form';
+import FormGroup from 'react-bootstrap/FormGroup';
+import FormLabel from 'react-bootstrap/FormLabel'
+import FormControl from 'react-bootstrap/FormControl';
+import Row from 'react-bootstrap/Row'
 
-export class LandingPage extends React.Component<Props, any> {
+interface State {
+    username: string,
+    password: string,
+    error: string
+}
+
+
+export class LandingPage extends React.Component<Props, State> {
     
-    Auth:AuthenticationService
+    auth:AuthenticationService
 
     constructor(props:Props){
         super(props);
@@ -14,7 +30,7 @@ export class LandingPage extends React.Component<Props, any> {
             password: '',
             error: ''
         };
-        this.Auth = new AuthenticationService();
+        this.auth = new AuthenticationService();
         this.validateLogin = this.validateLogin.bind(this);
         this.handleUserChange = this.handleUserChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -31,11 +47,16 @@ export class LandingPage extends React.Component<Props, any> {
             return this.setState({error: 'Username and password are required!'})
         }
 
-        this.Auth.login(this.state.username, this.state.password).then(() => {
-            console.log(localStorage.getItem('user'));
-            this.props.history.push("/app");
+        this.auth.login(this.state.username, this.state.password).then(() => {
+            if(this.auth.isValidAdmin()) {
+                this.props.history.push("/admin");
+            } else {
+                this.props.history.push("/app");
+            }
         }).catch(error => {
-            console.log(error.response.data);
+            this.setState({
+                error: 'Invalid username or password!'
+            });
         })
 
     }
@@ -53,19 +74,39 @@ export class LandingPage extends React.Component<Props, any> {
     }
 
     render () {
+        const loginErrors = this.state.error !== '';
         return (
-            <div>
-                <h1>Landing Page</h1>
-                <form onSubmit={this.handleSubmit}>
-                    <label>Username:
-                        <input type="text" name="name" value={this.state.username} onChange={this.handleUserChange} />
-                    </label>
-                    <label>Password:
-                        <input type="password" name="password" value={this.state.password} onChange={this.handlePasswordChange} />
-                    </label>
-                    <input type="submit" value="Submit" />
-                </form>
-            </div>
+            <Row>
+                <Col></Col>
+                <Col xs={8}>
+                    <Jumbotron>
+                        <h1>Landing Page</h1>
+                        <Form onSubmit={this.handleSubmit}>
+                            <FormGroup>
+                                <FormLabel>Username</FormLabel>
+                                    <FormControl type="text" name="name" value={this.state.username} onChange={this.handleUserChange} />
+                            </FormGroup>
+                            <FormGroup>
+                                <FormLabel>Password</FormLabel>
+                                    <FormControl type="password" name="password" value={this.state.password} onChange={this.handlePasswordChange} />
+                            </FormGroup>
+                            <Container><Button name="submit" type="submit">Submit</Button></Container>
+                        </Form>
+                        {loginErrors && (
+                            <Container><br />
+                                <Alert 
+                                    variant="danger" 
+                                    onClose={()=>{ this.setState({error: ''})}} 
+                                    dismissible
+                                >
+                                    {this.state.error}
+                                </Alert>
+                            </Container>
+                        )}
+                    </Jumbotron>
+                </Col>
+                <Col></Col>
+            </Row>
         );
     }
 }
