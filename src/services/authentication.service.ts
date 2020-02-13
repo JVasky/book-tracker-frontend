@@ -14,6 +14,7 @@ class AuthenticationService {
         const user = jwt(response.data.token);
         user.token = response.data.token;
         localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', user.token);
         return jwt;
     };
 
@@ -22,7 +23,7 @@ class AuthenticationService {
     }
 
     getToken() {
-        return localStorage.getItem('auth_token');
+        return localStorage.getItem('token');
     }
 
     isValid() {

@@ -1,11 +1,15 @@
 import React, { ReactHTMLElement } from 'react';
-import {Props} from './App'
-import AuthenticationService from './services/authentication.service'
+import {Props} from '../../App'
+import AuthenticationService from '../../services/authentication.service'
 
-export class AppLayout extends React.Component<Props> {
+interface State {
+    auth: AuthenticationService
+}
+
+export class AppLayout extends React.Component<Props, State> {
     auth:AuthenticationService
 
-    constructor(props:any) {
+    constructor(props:Props) {
         super(props);
         this.auth = new AuthenticationService();
     }

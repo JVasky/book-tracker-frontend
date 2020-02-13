@@ -1,6 +1,6 @@
 import React from 'react'
-import {Props} from './App'
-import AuthenticationService from './services/authentication.service'
+import {Props} from '../App'
+import AuthenticationService from '../services/authentication.service'
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/Button';
@@ -80,7 +80,7 @@ export class LandingPage extends React.Component<Props, State> {
                 <Col></Col>
                 <Col xs={8}>
                     <Jumbotron>
-                        <h1>Landing Page</h1>
+                        <h1>Login</h1>
                         <Form onSubmit={this.handleSubmit}>
                             <FormGroup>
                                 <FormLabel>Username</FormLabel>
