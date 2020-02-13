@@ -22,7 +22,7 @@ export class User implements UserInterface {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.createdDt = createdDt,
+        this.createdDt = createdDt;
         this.roles = roles;
     }
 
