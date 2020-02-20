@@ -1,8 +1,8 @@
-import React, { ReactHTMLElement } from 'react';
-import {Props} from '../../App'
+import React from 'react';
 import AuthenticationService from '../../services/authentication.service'
 import UserService from '../../services/user.service'
 import Button from 'react-bootstrap/Button';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 interface State {
     auth: AuthenticationService,
@@ -10,13 +10,13 @@ interface State {
     userService: UserService
 }
 
-export class AdminPage extends React.Component<Props, State> {
+export class AdminPage extends React.Component<RouteComponentProps, State> {
 
     auth:AuthenticationService;
     userService: UserService;
     users:any;
 
-    constructor(props:Props) {
+    constructor(props:any) {
         super(props);
         this.auth = new AuthenticationService();
         this.userService = new UserService();
@@ -40,3 +40,5 @@ export class AdminPage extends React.Component<Props, State> {
         );
     }
 }
+
+export default withRouter(AdminPage);

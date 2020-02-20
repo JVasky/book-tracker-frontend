@@ -1,5 +1,4 @@
 import React from 'react'
-import {Props} from '../App'
 import AuthenticationService from '../services/authentication.service'
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Alert from 'react-bootstrap/Alert'
@@ -11,6 +10,7 @@ import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel'
 import FormControl from 'react-bootstrap/FormControl';
 import Row from 'react-bootstrap/Row'
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 interface State {
     username: string,
@@ -18,12 +18,16 @@ interface State {
     error: string
 }
 
+interface LoginProps extends RouteComponentProps {
+    history:any,
+    updateUser: () => void
+}
 
-export class LandingPage extends React.Component<Props, State> {
+class LandingPage extends React.Component<LoginProps, State> {
     
     auth:AuthenticationService
 
-    constructor(props:Props){
+    constructor(props:LoginProps) {
         super(props);
         this.state = {
             username: '',
@@ -48,6 +52,7 @@ export class LandingPage extends React.Component<Props, State> {
         }
 
         this.auth.login(this.state.username, this.state.password).then(() => {
+            this.props.updateUser();
             if(this.auth.isValidAdmin()) {
                 this.props.history.push("/admin");
             } else {
@@ -75,6 +80,12 @@ export class LandingPage extends React.Component<Props, State> {
 
     render () {
         const loginErrors = this.state.error !== '';
+        if(this.auth.isValidAdmin()) {
+            this.props.history.push('/app');
+        }
+        if(this.auth.isValid()) {
+            this.props.history.push('/admin');
+        }
         return (
             <Row>
                 <Col></Col>
@@ -110,3 +121,5 @@ export class LandingPage extends React.Component<Props, State> {
         );
     }
 }
+
+export default withRouter(LandingPage);

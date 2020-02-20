@@ -1,7 +1,6 @@
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom'
 import AuthenticationService from './services/authentication.service'
-import { ReactComponent } from '*.svg';
 
 export const ProtectedRoute = ({component: Component, ...rest}:any) => {
     const auth = new AuthenticationService()

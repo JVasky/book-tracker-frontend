@@ -3,12 +3,12 @@ import Props from '../../App';
 import Row from 'react-bootstrap/Row'
 
 
-export class AdminUsersPage extends React.Component<Props> {
+export class AdminBooksPage extends React.Component<Props> {
 
     render() {
         return (
             <Row>
-                <h1>Users page</h1>
+                <h1>Books page</h1>
             </Row>
         )
     }

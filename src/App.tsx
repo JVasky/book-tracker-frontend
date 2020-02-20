@@ -1,17 +1,38 @@
 import React from 'react';
-import {RouteComponentProps} from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Routes from './routes'
+import AuthenticationService from './services/authentication.service'
+// import navbars
+import UserNav from './nav/user.nav'
 
-export interface Props extends RouteComponentProps {
-  history: any;
+interface State {
+  isUser: boolean,
+  isAdmin: boolean
 }
 
-class App extends React.Component {
+class App extends React.Component<any, State> {
+
+  auth = new AuthenticationService();
+
+  constructor(props:any) {
+    super(props);
+    this.state = {
+      isUser: this.auth.isValid() && !this.auth.isValidAdmin(),
+      isAdmin: this.auth.isValidAdmin()
+    }
+  }
+
   render() {
+    const updateUser = () => {
+      this.setState({
+        isUser: this.auth.isValid() && !this.auth.isValidAdmin(),
+        isAdmin: this.auth.isValidAdmin()
+      });
+    }
     return (
       <Container className="p-3">
-        <Routes />
+            <UserNav display={this.state.isUser} updateUser={updateUser}/>
+        <Routes updateUser={updateUser} />
       </Container>
     );
   }

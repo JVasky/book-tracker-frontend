@@ -3,8 +3,6 @@ let jwt = require('jwt-decode')
 
 class AuthenticationService {
     
-    constructor() {}
-
     async login(username :string, password :string) {
         const body = {
             username: username,
@@ -30,7 +28,7 @@ class AuthenticationService {
         let user = localStorage.getItem('user');
         if(user) {
             let u = JSON.parse(user);
-            return u.exp > ((new Date).getTime()/1000);
+            return u.exp > ((new Date()).getTime()/1000);
         } else {
             return false;
         }
@@ -41,7 +39,9 @@ class AuthenticationService {
         if(user) {
             let u = JSON.parse(user);
             let isAdmin = u.user_claims.roles.includes('admin') || u.user_claims.roles.includes('developer');
-            return u.exp > ((new Date).getTime()/1000) && isAdmin;
+            return u.exp > ((new Date()).getTime()/1000) && isAdmin;
+        } else {
+            return false;
         }
     }
 
