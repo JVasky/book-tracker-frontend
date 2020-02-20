@@ -6,10 +6,11 @@ import AuthorService from '../../services/author.service'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
-import Spinner from 'react-bootstrap/Spinner'
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import ClipLoader from 'react-spinners/ClipLoader'
 
 interface State {
+    loading:boolean,
     currentUser:any,
     users:any,
     authors:any,
@@ -26,6 +27,7 @@ export class AdminPage extends React.Component<RouteComponentProps, State> {
     constructor(props:any) {
         super(props);
         this.state = {
+            loading: true,
             currentUser: {},
             users: [],
             authors: [],
@@ -45,12 +47,18 @@ export class AdminPage extends React.Component<RouteComponentProps, State> {
                 currentUser: user,
                 users: users,
                 pendingBooks: books,
-                authors: authors
+                authors: authors,
+                loading: false
             });
         })
     }
 
     render() {
+        if(this.state.loading) {
+            return (
+                <ClipLoader css={'display:block;margin:0 auto;'} size={200} color={"#123abc"} loading={this.state.loading} />
+            );
+        }
         return (
             <div>
                 <Row>
