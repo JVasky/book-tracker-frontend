@@ -1,6 +1,5 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
 import Routes from './routes'
 import AuthenticationService from './services/authentication.service'
 // import navbars

@@ -1,0 +1,7 @@
+.card-div {
+    padding:10px;
+}
+
+.clickable:hover {
+    cursor: pointer;
+}
