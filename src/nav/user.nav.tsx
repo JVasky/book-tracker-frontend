@@ -38,14 +38,14 @@ class UserNav extends React.Component<NavProps, State> {
     render() {
         if(this.props.display) {
             return (
-                <Navbar bg="dark" expand="md">
+                <Navbar bg="primary" className="navbar-dark" expand="lg">
                     <NavbarToggle/>
                     <NavbarCollapse>
                         <Nav className='mr-auto'>
                             <LinkContainer to='/app'><NavbarBrand>Dashboard</NavbarBrand></LinkContainer>
                         </Nav>
                         <Nav>
-                            <NavLink><Button onClick={this.handleLogout}>Logout</Button></NavLink>
+                            <NavLink><Button className="btn-danger" onClick={this.handleLogout}>Logout</Button></NavLink>
                         </Nav>
                     </NavbarCollapse>
                 </Navbar>

@@ -38,7 +38,7 @@ class UserNav extends React.Component<NavProps, State> {
     render() {
         if(this.props.display) {
             return (
-                <Navbar bg="light" expand="lg">
+                <Navbar bg="primary" className="navbar-dark" expand="lg">
                     <NavbarToggle/>
                     <NavbarCollapse>
                         <Nav className='mr-auto'>
@@ -47,7 +47,7 @@ class UserNav extends React.Component<NavProps, State> {
                             <LinkContainer to="/admin/users"><NavLink>Manage Users</NavLink></LinkContainer>
                         </Nav>
                         <Nav>
-                            <NavLink><Button onClick={this.handleLogout}>Logout</Button></NavLink>
+                            <NavLink><Button className="btn-danger" onClick={this.handleLogout}>Logout</Button></NavLink>
                         </Nav>
                     </NavbarCollapse>
                 </Navbar>

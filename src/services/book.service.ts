@@ -1,6 +1,5 @@
 import axios from 'axios'
 import AuthenticationService from '../services/authentication.service'
-import User from '../models/user'
 
 class BookService {
     
@@ -35,6 +34,15 @@ class BookService {
             }
         });
         return JSON.parse(response.data.data);
+    }
+
+    async approve(id:Number) {
+        await axios.put(`${process.env.REACT_APP_REST_API_ENDPOINT}/books/approve/${id}`, null, {
+            headers: {
+                Authorization: this.auth.getToken()
+            }
+        });
+        return true;
     }
 }
 
