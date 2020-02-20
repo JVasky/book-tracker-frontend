@@ -1,9 +1,11 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
 import Routes from './routes'
 import AuthenticationService from './services/authentication.service'
 // import navbars
 import UserNav from './nav/user.nav'
+import AdminNav from './nav/admin.nav'
 
 interface State {
   isUser: boolean,
@@ -32,7 +34,8 @@ class App extends React.Component<any, State> {
     return (
       <Container className="p-3">
             <UserNav display={this.state.isUser} updateUser={updateUser}/>
-        <Routes updateUser={updateUser} />
+            <AdminNav display={this.state.isAdmin} updateUser={updateUser}/>
+            <Routes updateUser={updateUser} />
       </Container>
     );
   }

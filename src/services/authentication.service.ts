@@ -1,4 +1,5 @@
 import axios from 'axios'
+import User from '../models/user'
 let jwt = require('jwt-decode')
 
 class AuthenticationService {
@@ -17,7 +18,21 @@ class AuthenticationService {
     };
 
     getUser() {
-        return localStorage.getItem('user');
+        let user = localStorage.getItem('user');
+        if (user) {
+            const userJson = JSON.parse(user);
+            console.log(userJson);
+            return new User(
+                userJson.identity,
+                userJson.user_claims.email,
+                userJson.user_claims.firstName,
+                userJson.user_claims.lastName,
+                userJson.user_claims.roles,
+            );
+
+        } else {
+            return {};
+        }
     }
 
     getToken() {

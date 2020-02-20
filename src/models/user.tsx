@@ -13,16 +13,14 @@ export class User implements UserInterface {
     email: string;
     firstName: string;
     lastName: string;
-    createdDt: Date;
     roles: String[];
 
     constructor(username:string, email:string, firstName: string, 
-        lastName:string, roles:String[], createdDt:Date=new Date(0)) {
+        lastName:string, roles:String[]) {
         this.username = username;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.createdDt = createdDt;
         this.roles = roles;
     }
 
@@ -40,10 +38,6 @@ export class User implements UserInterface {
 
     getEmail() {
         return this.email;
-    }
-
-    getCreatedDt() {
-        return this.createdDt;
     }
 
     getRoles() {

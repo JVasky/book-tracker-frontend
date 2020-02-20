@@ -2,7 +2,7 @@ import axios from 'axios'
 import AuthenticationService from '../services/authentication.service'
 import User from '../models/user'
 
-class UserService {
+class BookService {
     
     auth:AuthenticationService;
 
@@ -10,8 +10,8 @@ class UserService {
         this.auth = new AuthenticationService();
     }
 
-    async get(userid:Number) {
-        const response = await axios.get(`${process.env.REACT_APP_REST_API_ENDPOINT}/users/${userid}`, {
+    async get(bookid:Number) {
+        const response = await axios.get(`${process.env.REACT_APP_REST_API_ENDPOINT}/books/${bookid}`, {
             headers: {
                 Authorization: this.auth.getToken()
             }
@@ -20,7 +20,16 @@ class UserService {
     };
 
     async getAll() {
-        const response = await axios.get(`${process.env.REACT_APP_REST_API_ENDPOINT}/users`, {
+        const response = await axios.get(`${process.env.REACT_APP_REST_API_ENDPOINT}/books`, {
+            headers: {
+                Authorization: this.auth.getToken()
+            }
+        });
+        return JSON.parse(response.data.data);
+    }
+
+    async getPending() {
+        const response = await axios.get(`${process.env.REACT_APP_REST_API_ENDPOINT}/books/pending`, {
             headers: {
                 Authorization: this.auth.getToken()
             }
@@ -29,4 +38,4 @@ class UserService {
     }
 }
 
-export default UserService;
+export default BookService;
