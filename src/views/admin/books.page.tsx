@@ -5,7 +5,7 @@ import Table from 'react-bootstrap/Table';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
-import Pagination from 'react-bootstrap/Pagination'
+import Paginator from '../../components/paginator.component'
 import ClipLoader from 'react-spinners/ClipLoader';
 import BookService from '../../services/book.service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -17,6 +17,7 @@ interface State {
     selectedBook?:number,
     approvalError:boolean,
     page:number,
+    numberOfPages:number,
     sort: {
         column:string,
         direction:string
@@ -36,6 +37,7 @@ export class AdminBooksPage extends React.Component<any, State> {
             selectedBook: undefined,
             approvalError: false,
             page:0,
+            numberOfPages:0,
             sort: {
                 column: '',
                 direction: 'desc'
@@ -53,6 +55,18 @@ export class AdminBooksPage extends React.Component<any, State> {
         this.toPage = this.toPage.bind(this);
     }
 
+    componentDidMount() {
+        bookService.getPending().then((books) => {
+            this.setState({
+                pendingBooks: books,
+                page: 1,
+                numberOfPages: Math.ceil(books.length/pageSize),
+                loading: false
+            });
+        });
+    }
+
+    // table related methods
     renderTable() {
         return this.state.pendingBooks.slice(pageSize * (this.state.page-1), pageSize * (this.state.page-1) + pageSize).map((book:any, index:number) => {
             const {id, title, description, created_dt} = book;
@@ -86,48 +100,6 @@ export class AdminBooksPage extends React.Component<any, State> {
             {dateObj.toLocaleDateString('en-US', dateOptions)} <br/>
             {dateObj.toLocaleTimeString('en-US', timeOptions)}
         </>)
-    }
-
-    openApprovalModal(id:number) {
-        this.setState({
-            selectedBook: id
-        })
-    }
-
-    handleApprovalClose() {
-        this.setState({
-            selectedBook: undefined,
-            approvalError:false
-        });
-    }
-
-    handleBookApproval() {
-        if(this.state.selectedBook !== undefined) {
-            bookService.approve(this.state.selectedBook).then(() => {
-                let newBookList = this.state.pendingBooks.filter((book:any) => {
-                    return book.id !== this.state.selectedBook;
-                });
-                this.setState({
-                    selectedBook: undefined,
-                    pendingBooks: newBookList,
-                    approvalError:false
-                });
-            }).catch((response) => {
-                this.setState({
-                    approvalError: true
-                });
-            });
-        }
-    }
-
-    componentDidMount() {
-        bookService.getPending().then((books) => {
-            this.setState({
-                pendingBooks: books,
-                page: 1,
-                loading: false
-            });
-        });
     }
 
     onSort(column:string) {
@@ -169,8 +141,42 @@ export class AdminBooksPage extends React.Component<any, State> {
         }
     }
 
+    openApprovalModal(id:number) {
+        this.setState({
+            selectedBook: id
+        })
+    }
+
+    handleApprovalClose() {
+        this.setState({
+            selectedBook: undefined,
+            approvalError:false
+        });
+    }
+
+    handleBookApproval() {
+        if(this.state.selectedBook !== undefined) {
+            bookService.approve(this.state.selectedBook).then(() => {
+                let newBookList = this.state.pendingBooks.filter((book:any) => {
+                    return book.id !== this.state.selectedBook;
+                });
+                this.setState({
+                    selectedBook: undefined,
+                    pendingBooks: newBookList,
+                    numberOfPages: Math.ceil(newBookList.length/pageSize),
+                    approvalError:false
+                });
+            }).catch((response) => {
+                this.setState({
+                    approvalError: true
+                });
+            });
+        }
+    }
+
+    //pagination related methods
     nextPage() {
-        if(this.state.page < Math.ceil(this.state.pendingBooks.length/pageSize)) {
+        if(this.state.page < this.state.numberOfPages) {
             this.setState({
                 page: this.state.page + 1
             })
@@ -186,49 +192,11 @@ export class AdminBooksPage extends React.Component<any, State> {
     }
 
     toPage(page:number) {
-        if(page <= Math.ceil(this.state.pendingBooks.length/pageSize) && page > 0) {
+        if(page <= this.state.numberOfPages && page > 0) {
             this.setState({
                 page: page
             })
         }
-    }
-
-    renderPagination() {
-        let leftNeighbor = null;
-        let rightNeighbor = null;
-        if (this.state.page - 1 > 1) {
-            let p = this.state.page-1;
-            leftNeighbor = (<>
-                <Pagination.Item onClick={() => {this.toPage(1)}}>1</Pagination.Item>
-                <Pagination.Ellipsis />
-                <Pagination.Item onClick={() => {this.toPage(p)}}>{p}</Pagination.Item>
-            </>);
-        }  else {
-            leftNeighbor = (<>
-            </>)
-        }
-        if (Math.ceil(this.state.pendingBooks.length/pageSize) - this.state.page > 1) {
-            let p = this.state.page + 1;
-            rightNeighbor = (<>
-                <Pagination.Item onClick={() => {this.toPage(p)}}>{p}</Pagination.Item>
-                <Pagination.Ellipsis />
-                <Pagination.Item onClick={() => {this.toPage(Math.ceil(this.state.pendingBooks.length/pageSize))}}>{Math.ceil(this.state.pendingBooks.length/pageSize)}</Pagination.Item>
-            </>)
-        } else {
-            rightNeighbor = (<>
-            </>)
-        }
-        return (
-            <Pagination>
-                <Pagination.First onClick={() =>{this.toPage(1)}}/>
-                <Pagination.Prev onClick={this.prevPage}/>
-                {leftNeighbor}
-                <Pagination.Item active>{this.state.page}</Pagination.Item>
-                {rightNeighbor}
-                <Pagination.Next onClick={this.nextPage}/>
-                <Pagination.Last onClick={() =>{this.toPage(Math.ceil(this.state.pendingBooks.length/pageSize))}}/>
-            </Pagination>
-        )
     }
 
     render() {
@@ -275,7 +243,14 @@ export class AdminBooksPage extends React.Component<any, State> {
                                     {this.renderTable()}
                                 </tbody>
                             </Table>
-                            {this.renderPagination()}
+                            <Paginator 
+                                    list={this.state.pendingBooks}
+                                    page={this.state.page}
+                                    numberOfPages={this.state.numberOfPages}
+                                    toPage={this.toPage}
+                                    nextPage={this.nextPage}
+                                    prevPage={this.prevPage}
+                            />
                         </div>
                     </Col>
                 </Row>
