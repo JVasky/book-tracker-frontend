@@ -63,7 +63,7 @@ export class AdminPage extends React.Component<RouteComponentProps, State> {
             <div>
                 <Row>
                     <Col>
-                        <h1 className="text-center p-3">Welcome, {this.state.currentUser.firstName}</h1>
+                        <h1 className="p-3">Welcome, {this.state.currentUser.firstName}</h1>
                     </Col>
                 </Row>
                 <Row>

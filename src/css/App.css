@@ -5,3 +5,32 @@
 .clickable:hover {
     cursor: pointer;
 }
+
+.pagination > li > a
+{
+    background-color: #2C3E50;
+    color: white;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: #ddd;
+    background-color: rgb(31, 43, 56);
+    border-color: #ddd;
+}
+
+.pagination > .active > span
+{
+    color: #2C3E50 !important;
+    background-color: #ddd !important;
+    border: solid 1px #2C3E50 !important;
+}
+
+.pagination > .active > span:hover
+{
+    background-color: #ddd !important;
+    border: solid 1px #2C3E50;
+}
