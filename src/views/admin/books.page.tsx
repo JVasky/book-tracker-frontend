@@ -21,7 +21,8 @@ interface State {
     sort: {
         column:string,
         direction:string
-    }
+    },
+    pageError:string
 }
 
 const bookService = new BookService();
@@ -41,7 +42,8 @@ export class AdminBooksPage extends React.Component<any, State> {
             sort: {
                 column: '',
                 direction: 'desc'
-            }
+            },
+            pageError: ''
         };
         this.renderTable = this.renderTable.bind(this);
         this.formatDate = this.formatDate.bind(this);
@@ -63,6 +65,17 @@ export class AdminBooksPage extends React.Component<any, State> {
                 numberOfPages: Math.ceil(books.length/pageSize),
                 loading: false
             });
+        }).catch(error => {
+            if(error.response.status !== 404) {
+                this.setState({
+                    pageError: "There was an error loading the page, please contact administrator.",
+                    loading: false
+                });
+            } else {
+                this.setState({
+                    loading: false
+                })
+            }
         });
     }
 
@@ -205,6 +218,19 @@ export class AdminBooksPage extends React.Component<any, State> {
                 <ClipLoader css={'display:block;margin:0 auto;'} size={200} color={"#123abc"} loading={this.state.loading} />
             );
         }
+
+        if(this.state.pageError !== '') {
+            return (
+                <Alert variant="danger">
+                    <h2>{this.state.pageError}</h2>
+                </Alert>
+            );
+        }
+
+        if(this.state.pendingBooks.length === 0) {
+           return <h1>There are no pending books at this time.</h1>;
+        }
+
         return (
             <div>
                 <Modal show={this.state.selectedBook !== undefined}>

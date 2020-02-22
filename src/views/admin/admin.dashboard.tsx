@@ -4,6 +4,7 @@ import UserService from '../../services/user.service'
 import BookService from '../../services/book.service'
 import AuthorService from '../../services/author.service'
 import Row from 'react-bootstrap/Row';
+import Alert from 'react-bootstrap/Alert'
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -14,7 +15,8 @@ interface State {
     currentUser:any,
     users:any,
     authors:any,
-    pendingBooks:any
+    pendingBooks:any,
+    pageError:string
 }
 
 const userService = new UserService();
@@ -31,18 +33,36 @@ export class AdminPage extends React.Component<RouteComponentProps, State> {
             currentUser: {},
             users: [],
             authors: [],
-            pendingBooks: []
+            pendingBooks: [],
+            pageError: ''
         };
     }
 
     componentDidMount() {
         let user = auth.getUser();
         Promise.all([
-            userService.getAll(),
-            bookService.getPending(),
-            authorService.getAll()
+            userService.getAll().catch(error => {
+                if(error.response.status === 404) {
+                    return [];
+                } else {
+                    throw error;
+                }
+            }),
+            bookService.getPending().catch(error => {
+                if(error.response.status === 404) {
+                    return [];
+                } else {
+                    throw error;
+                }
+            }),
+            authorService.getAll().catch(error => {
+                if(error.response.status === 404) {
+                    return [];
+                } else {
+                    throw error;
+                }
+            })
         ]).then(([users, books, authors]) => {
-            console.log(user);
             this.setState({
                 currentUser: user,
                 users: users,
@@ -50,6 +70,13 @@ export class AdminPage extends React.Component<RouteComponentProps, State> {
                 authors: authors,
                 loading: false
             });
+        }).catch(error => {
+            if(error.response.status !== 404) {
+                this.setState({
+                    pageError: "There was an error loading the page, please contact the site administrator.",
+                    loading: false
+                });
+            } 
         })
     }
 
@@ -59,6 +86,15 @@ export class AdminPage extends React.Component<RouteComponentProps, State> {
                 <ClipLoader css={'display:block;margin:0 auto;'} size={200} color={"#123abc"} loading={this.state.loading} />
             );
         }
+
+        if(this.state.pageError) {
+            return (
+                <Alert variant="danger">
+                    <h2>{this.state.pageError}</h2>
+                </Alert>
+            );
+        }
+
         return (
             <div>
                 <Row>
