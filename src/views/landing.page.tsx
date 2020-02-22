@@ -19,7 +19,6 @@ interface State {
 }
 
 interface LoginProps extends RouteComponentProps {
-    history:any,
     updateUser: () => void
 }
 
@@ -39,6 +38,10 @@ class LandingPage extends React.Component<LoginProps, State> {
         this.handleUserChange = this.handleUserChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentWillMount() {
+        this.props.updateUser();
     }
     
     validateLogin() {
