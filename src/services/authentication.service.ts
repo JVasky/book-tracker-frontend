@@ -21,7 +21,6 @@ class AuthenticationService {
         let user = localStorage.getItem('user');
         if (user) {
             const userJson = JSON.parse(user);
-            console.log(userJson);
             return new User(
                 userJson.identity,
                 userJson.user_claims.email,
