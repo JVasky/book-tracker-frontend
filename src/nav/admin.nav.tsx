@@ -44,10 +44,11 @@ class UserNav extends React.Component<NavProps, State> {
                         <Nav className='mr-auto'>
                             <LinkContainer to="/admin"><NavbarBrand>Admin Dashboard</NavbarBrand></LinkContainer>
                             <LinkContainer to="/admin/books"><NavLink>Manage Books</NavLink></LinkContainer>
+                            <LinkContainer to="/admin/authors"><NavLink>Manage Authors</NavLink></LinkContainer>
                             <LinkContainer to="/admin/users"><NavLink>Manage Users</NavLink></LinkContainer>
                         </Nav>
                         <Nav>
-                            <NavLink><Button className="btn-danger" onClick={this.handleLogout}>Logout</Button></NavLink>
+                            <NavLink><Button variant="outline-danger" onClick={this.handleLogout}>Logout</Button></NavLink>
                         </Nav>
                     </NavbarCollapse>
                 </Navbar>

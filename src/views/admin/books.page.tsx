@@ -228,7 +228,17 @@ export class AdminBooksPage extends React.Component<any, State> {
         }
 
         if(this.state.pendingBooks.length === 0) {
-           return <h1>There are no pending books at this time.</h1>;
+           return (
+            <Row className="pt-5">
+                <Col></Col>
+                <Col xs={6}>
+                    <Alert variant="warning">
+                        <h2>There are no pending books at this time.</h2>
+                    </Alert>
+                </Col>
+                <Col></Col>
+            </Row>
+           );
         }
 
         return (

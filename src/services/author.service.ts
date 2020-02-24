@@ -35,6 +35,25 @@ class AuthorService {
         });
         return JSON.parse(response.data.data);
     }
+
+    async approve(id:Number) {
+        await axios.put(`${process.env.REACT_APP_REST_API_ENDPOINT}/authors/approve/${id}`, null, {
+            headers: {
+                Authorization: this.auth.getToken()
+            }
+        });
+        return true;
+    }
+    
+    async update(author:any) {
+        await axios.put(`${process.env.REACT_APP_REST_API_ENDPOINT}/authors`, author, {
+            headers: {
+                Authorization: this.auth.getToken(),
+                "Content-Type": "application/json"
+            }
+        });
+        return true
+    }
 }
 
 export default AuthorService;
