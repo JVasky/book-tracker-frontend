@@ -104,7 +104,12 @@ class LandingPage extends React.Component<LoginProps, State> {
                                 <FormLabel>Password</FormLabel>
                                     <FormControl type="password" name="password" value={this.state.password} onChange={this.handlePasswordChange} />
                             </FormGroup>
-                            <Container><Button name="submit" type="submit">Submit</Button></Container>
+                            <FormGroup>
+                                <Button name="submit" type="submit">Submit</Button>
+                            </FormGroup>
+                            <FormGroup>
+                                <Button variant="outline-primary" name="signup">Sign Up!</Button>
+                            </FormGroup>
                         </Form>
                         {loginErrors && (
                             <Container><br />
