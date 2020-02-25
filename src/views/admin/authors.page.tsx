@@ -17,7 +17,8 @@ interface Author {
     first_name:string,
     middle_name:string,
     last_name:string,
-    bio:string
+    bio:string,
+    approved:boolean
 }
 
 const getBlankAuthor = () => {
@@ -26,7 +27,8 @@ const getBlankAuthor = () => {
         first_name: '',
         middle_name: '',
         last_name: '',
-        bio: ''
+        bio: '',
+        approved: false
     };
 };
 
@@ -54,12 +56,6 @@ export class AdminAuthorsPage extends React.Component<any, State> {
 
     constructor(props:any) {
         super(props);
-        let blankAuthor = {
-            first_name: '',
-            middle_name: '',
-            last_name: '',
-            bio: ''
-        };
         this.state = {
             pendingAuthors: [],
             loading: true,
@@ -249,9 +245,16 @@ export class AdminAuthorsPage extends React.Component<any, State> {
     }
 
     handleAuthorModify() {
-        authorService.update(this.state.selectedAuthorModify).then(() => {
+        let a = this.state.selectedAuthorModify;
+        a.approved = true;
+        authorService.update(a).then(() => {
+            let newAuthorList = this.state.pendingAuthors.filter((author:any) => {
+                return author.id !== a.id;
+            });
             this.setState({
                 selectedAuthorModify: getBlankAuthor(),
+                pendingAuthors: newAuthorList,
+                numberOfPages: Math.ceil(newAuthorList.length/pageSize),
                 modifyAuthor: false,
                 modifyError: false
             });
