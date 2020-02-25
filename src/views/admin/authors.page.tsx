@@ -409,13 +409,13 @@ export class AdminAuthorsPage extends React.Component<any, State> {
                 <Row>
                     <Col md={12}>
                         <div>
-                            <Table striped bordered hover>
+                            <Table striped bordered hover responsive>
                                 <thead>
                                     <tr  className="table-primary">
                                         <th className="clickable" style={{ minWidth:75 }} onClick={() => {this.onSort('id')}}>Id {this.renderSortIcon('id')}</th>
-                                        <th className="clickable" onClick={() => {this.onSort('first_name')}}>First Name {this.renderSortIcon('first_name')}</th>
-                                        <th className="clickable" onClick={() => {this.onSort('middle_name')}}>Middle Name {this.renderSortIcon('middle_name')}</th>
-                                        <th className="clickable" onClick={() => {this.onSort('last_name')}}>Last Name {this.renderSortIcon('last_name')}</th>
+                                        <th className="clickable" style={{ minWidth:120 }} onClick={() => {this.onSort('first_name')}}>First Name {this.renderSortIcon('first_name')}</th>
+                                        <th className="clickable" style={{ minWidth:130 }} onClick={() => {this.onSort('middle_name')}}>Middle Name {this.renderSortIcon('middle_name')}</th>
+                                        <th className="clickable" style={{ minWidth:115 }} onClick={() => {this.onSort('last_name')}}>Last Name {this.renderSortIcon('last_name')}</th>
                                         <th>Bio</th>
                                         <th className="clickable" style={{ minWidth:150 }} onClick={() => {this.onSort('created_dt')}}>Date Created {this.renderSortIcon('created_dt')}</th>
                                         <th>Approve</th>

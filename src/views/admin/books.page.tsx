@@ -266,7 +266,7 @@ export class AdminBooksPage extends React.Component<any, State> {
                 <Row>
                     <Col md={12}>
                         <div>
-                            <Table striped bordered hover>
+                            <Table responsive striped bordered hover>
                                 <thead>
                                     <tr  className="table-primary">
                                         <th className="clickable" style={{ minWidth:75 }} onClick={() => {this.onSort('id')}}>Id {this.renderSortIcon('id')}</th>
