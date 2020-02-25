@@ -27,6 +27,24 @@ class UserService {
         });
         return JSON.parse(response.data.data);
     }
+
+    async activate(userid:Number) {
+        const response = await axios.put(`${process.env.REACT_APP_REST_API_ENDPOINT}/users/activate/${userid}`, {}, {
+            headers: {
+                Authorization: this.auth.getToken()
+            }
+        });
+        return true;
+    }
+
+    async deactivate(userid:Number) {
+        const response = await axios.put(`${process.env.REACT_APP_REST_API_ENDPOINT}/users/deactivate/${userid}`, {}, {
+            headers: {
+                Authorization: this.auth.getToken()
+            }
+        });
+        return true;
+    }
 }
 
 export default UserService;

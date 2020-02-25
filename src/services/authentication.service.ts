@@ -17,6 +17,15 @@ class AuthenticationService {
         return jwt;
     };
 
+    getUserName() {
+        let user = localStorage.getItem('user');
+        if (user) {
+            return JSON.parse(user).identity;
+        } else {
+            return null;
+        }
+    }
+
     getUser() {
         let user = localStorage.getItem('user');
         if (user) {

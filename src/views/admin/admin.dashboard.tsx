@@ -14,7 +14,7 @@ interface State {
     loading:boolean,
     currentUser:any,
     users:any,
-    authors:any,
+    pendingAuthors:any,
     pendingBooks:any,
     pageError:string
 }
@@ -32,7 +32,7 @@ export class AdminPage extends React.Component<RouteComponentProps, State> {
             loading: true,
             currentUser: {},
             users: [],
-            authors: [],
+            pendingAuthors: [],
             pendingBooks: [],
             pageError: ''
         };
@@ -55,7 +55,7 @@ export class AdminPage extends React.Component<RouteComponentProps, State> {
                     throw error;
                 }
             }),
-            authorService.getAll().catch(error => {
+            authorService.getPending().catch(error => {
                 if(error.response.status === 404) {
                     return [];
                 } else {
@@ -67,7 +67,7 @@ export class AdminPage extends React.Component<RouteComponentProps, State> {
                 currentUser: user,
                 users: users,
                 pendingBooks: books,
-                authors: authors,
+                pendingAuthors: authors,
                 loading: false
             });
         }).catch(error => {
@@ -114,8 +114,8 @@ export class AdminPage extends React.Component<RouteComponentProps, State> {
                     <Col md={4}>
                         <div className="card-div">
                             <Card className="text-white bg-info">
-                                <Card.Header className='text-center font-weight-bold'>Number of Authors</Card.Header>
-                                <Card.Body className='text-center bold'>{this.state.authors.length}</Card.Body>
+                                <Card.Header className='text-center font-weight-bold'>Authors Awaiting Approval</Card.Header>
+                                <Card.Body className='text-center bold'>{this.state.pendingAuthors.length}</Card.Body>
                             </Card> 
                         </div>
                     </Col>
