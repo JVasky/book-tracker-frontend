@@ -17,6 +17,18 @@ class AuthenticationService {
         return jwt;
     };
 
+    async signUp(user:any) {
+        const body = {
+            username: user.username,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            password: user.password            
+        }
+        const response = await axios.post(`${process.env.REACT_APP_REST_API_ENDPOINT}/signup`, body);
+        return true;
+    }
+
     getUserName() {
         let user = localStorage.getItem('user');
         if (user) {
