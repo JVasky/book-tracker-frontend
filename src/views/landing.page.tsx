@@ -383,7 +383,10 @@ class LandingPage extends React.Component<LoginProps, State> {
                             </FormGroup>
                             <FormGroup>
                                 <FormLabel>Password</FormLabel>
-                                    <FormControl type="password" name="password" value={this.state.password} onChange={this.handlePasswordChange} />
+                                    <FormControl type="password" name="password" value={this.state.password} isInvalid={this.state.error !== ''} onChange={this.handlePasswordChange} />
+                                    <Form.Control.Feedback type="invalid">
+                                        {this.state.error}
+                                    </Form.Control.Feedback>
                             </FormGroup>
                             <FormGroup>
                                 <Button name="submit" type="submit">Login</Button>
@@ -392,17 +395,6 @@ class LandingPage extends React.Component<LoginProps, State> {
                                 <Button variant="outline-primary" name="signup" onClick={this.handleSignupOpen}>Sign Up!</Button>
                             </FormGroup>
                         </Form>
-                        {loginErrors && (
-                            <Container><br />
-                                <Alert 
-                                    variant="danger" 
-                                    onClose={()=>{ this.setState({error: ''})}} 
-                                    dismissible
-                                >
-                                    {this.state.error}
-                                </Alert>
-                            </Container>
-                        )}
                     </Jumbotron>
                 </Col>
                 <Col></Col>
