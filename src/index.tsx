@@ -1,5 +1,6 @@
 import './css/App.css'
-import './css/bootstrap.min.css'
+import './css/flatly.min.css'
+//import './css/sandstone.min.css'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
